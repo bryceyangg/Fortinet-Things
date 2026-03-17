@@ -1,0 +1,111 @@
+config system automation-action
+
+    edit "PowerAutomate-AdminCreation"
+
+        set action-type webhook
+
+        set protocol https
+
+        set uri "default3ee025b9754c4b57a1ec1ba0f12e87.68.environment.api.powerplatform.com/...."    
+
+        set http-body "{
+
+  \"fortigate_name\": \"%%log.devname%%\",
+
+  \"serial_number\": \"%%log.devid%%\",
+
+  \"log_message\": \"%%log.msg%%\",
+
+  \"user\": \"%%log.user%%\",
+
+  \"action\": \"%%log.action%%\",
+
+  \"config_path\": \"%%log.cfgpath%%\",
+
+  \"config_object\": \"%%log.cfgobj%%\",
+
+  \"config_attributes\": \"%%log.cfgattr%%\",
+
+  \"vdom\": \"%%log.vd%%\",
+
+  \"ui\": \"%%log.ui%%\",
+
+  \"logid\": \"%%log.logid%%\",
+
+  \"type\": \"%%log.type%%\",
+
+  \"subtype\": \"%%log.subtype%%\"
+
+}"
+
+        set port 443
+
+        config http-headers
+
+            edit 1
+
+                set key "Content-Type"
+
+                set value "application/json"
+
+            next
+
+        end
+
+    next
+
+end
+
+config system automation-trigger
+
+    edit "Admin Creation"
+
+        set event-type event-log
+
+        set logid 44547
+
+        config fields
+
+            edit 1
+
+                set name "action"
+
+                set value "Add"
+
+            next
+
+            edit 2
+
+                set name "cfgpath"
+
+                set value "system.admin"
+
+            next
+
+        end
+
+    next
+
+end
+
+config system automation-stitch
+
+    edit "Admin-Created-Teams-Alert"
+
+        set trigger "Admin Creation"
+
+        config actions
+
+            edit 1
+
+                set action "PowerAutomate-AdminCreation"
+
+                set required enable
+
+            next
+
+        end
+
+    next
+
+end
