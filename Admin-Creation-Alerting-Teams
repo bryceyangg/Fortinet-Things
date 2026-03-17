@@ -6,7 +6,7 @@ config system automation-action
 
         set protocol https
 
-        set uri "default3ee025b9754c4b57a1ec1ba0f12e87.68.environment.api.powerplatform.com/...."    
+        set uri "your-url-here"    
 
         set http-body "{
 
